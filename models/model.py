@@ -12,5 +12,6 @@ class Orders(Base):
     order_id = Column(String)
     status = Column(String)
     session_id = Column(String)
+    url = Column(String)
 
 

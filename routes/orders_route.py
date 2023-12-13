@@ -26,16 +26,25 @@ def get_db():
 def create_payment(user: users_schema.UserBase, product: products_schema.ProductBase, db: Session = Depends(get_db)):
     try:
         order = orders_repo.create_payment(user, product, db)
-        return {"status": True, "message": "created!", "data": order}
+        if order:
+            return {"status": True, "message": "created!", "data": order}
     except HTTPException as e:
         return JSONResponse(status_code=e.status_code, content={"status": False, "message": str(e), "data": None})
 
 
 @routes.get("/get_payment_by_order_id")
-def get_payment_by_order_id(orderid: str, db: Session):
+def get_payment_by_order_id(orderid: str, db: Session = Depends(get_db)):
     try:
         payment = orders_repo.get_payment_by_order_id(orderid, db)
         return {"status": True, "message": "get data completed!", "data": payment}
     except HTTPException as e:
         return JSONResponse(status_code=e.status_code, content={"status": False, "message": str(e), "data": None})
 
+
+@routes.post("/webhook")
+def webhook(db: Session = Depends(get_db)):
+    try:
+        webhook_status = orders_repo.webhook()
+        return webhook_status
+    except HTTPException as e:
+        return JSONResponse(status_code=e.status_code, content={"status": False, "message": str(e), "data": None})

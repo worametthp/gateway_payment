@@ -9,6 +9,7 @@ class OrderBase(BaseModel):
     order_id: UUID
     status: str
     session_id: str
+    url: str
 
 
 class OrderCreate(OrderBase):
