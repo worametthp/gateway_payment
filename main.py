@@ -9,10 +9,10 @@ import sqlalchemy
 model.Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
+app.include_router(orders_router)
 
 @app.get("/")
 def hello():
     return {"hello": "Gateway Payment"}
-
 
 
