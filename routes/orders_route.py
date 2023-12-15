@@ -41,10 +41,10 @@ def get_payment_by_order_id(orderid: str, db: Session = Depends(get_db)):
         return JSONResponse(status_code=e.status_code, content={"status": False, "message": str(e), "data": None})
 
 
-@routes.post("/webhook")
+@routes.patch("/webhook")
 def webhook(db: Session = Depends(get_db)):
     try:
-        webhook_status = orders_repo.webhook()
+        webhook_status = orders_repo.webhook(db)
         return webhook_status
     except HTTPException as e:
         return JSONResponse(status_code=e.status_code, content={"status": False, "message": str(e), "data": None})

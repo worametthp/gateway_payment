@@ -8,6 +8,7 @@ import json
 import os
 import stripe
 from flask import Flask, jsonify, request
+import uvicorn
 
 model.Base.metadata.create_all(bind=engine)
 
@@ -17,6 +18,11 @@ app.include_router(orders_router)
 @app.get("/")
 def hello():
     return {"hello": "Gateway Payment"}
+
+
+if __name__ == '__main__':
+    uvicorn.run(app, host="0.0.0.0", port=8000)
+
 
 
 

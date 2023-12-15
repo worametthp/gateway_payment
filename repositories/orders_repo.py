@@ -72,12 +72,13 @@ def webhook(db: Session):
 
     # Handle the event
     if event['type'] == 'checkout.session.completed':
-      payment_intent = event['data']['object']
-      sessionId = payment_intent.id
-      db.query(model.Orders).filter_by(session_id=sessionId).update({'status': payment_intent.stutus})
-      db.commit()
+        payment_intent = event['data']['object']
+        sessionId = payment_intent.id
+        status = payment_intent.stutus
+        db.query(model.Orders).filter_by(session_id=sessionId).update({'status': status})
+        db.commit()
     # ... handle other event types
     else:
-      print('Unhandled event type {}'.format(event['type']))
-
+        print('Unhandled event type {}'.format(event['type']))
     return jsonify(success=True)
+
